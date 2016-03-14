@@ -14,7 +14,7 @@ var src = 'src/';
 var dist = 'dist/';
 
 var autoprefixerBrowsers = [
-  'ie >= 9',
+  'ie >= 8',
   'ie_mob >= 10',
   'ff >= 30',
   'chrome >= 34',
@@ -29,6 +29,7 @@ var autoprefixerBrowsers = [
 gulp.task('scripts', function() {
   return gulp.src(webpackConfig.entry)
     .pipe($.webpackStream(webpackConfig))
+    .pipe(isProduction ? $.stripDebug() : $.util.noop())
     .pipe(isProduction ? $.uglifyjs() : $.util.noop())
     .pipe(gulp.dest(dist + 'js/'))
     .pipe($.size({ title : 'js' }))
@@ -71,6 +72,11 @@ gulp.task('static', function(cb) {
     .pipe(gulp.dest(dist + 'static/'));
 });
 
+gulp.task('coursemap', function(cb){
+  return gulp.src(src + 'coursemap.json')
+         .pipe(gulp.dest(dist));
+});
+
 gulp.task('watch', function() {
   gulp.watch(src + 'stylus/*.styl', ['styles']);
   gulp.watch(src + 'index.html', ['html']);
@@ -78,9 +84,8 @@ gulp.task('watch', function() {
 });
 
 gulp.task('clean', function(cb) {
-  del([dist], cb);
+  del([dist + 'index.html', dist + 'css', dist + 'js', dist + 'static'], cb);
 });
-
 
 
 // by default build project and then watch files in order to trigger livereload
@@ -88,5 +93,5 @@ gulp.task('default', ['build', 'serve', 'watch']);
 
 // waits until clean is finished then builds the project
 gulp.task('build', ['clean'], function(){
-  gulp.start(['static', 'html','scripts','styles']);
+  gulp.start(['static', 'coursemap', 'html','scripts','styles']);
 });
