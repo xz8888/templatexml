@@ -1,4 +1,4 @@
-import $ from 'JQuery'
+import $ from 'jquery'
 import Backbone from 'backbone';
 import App from './app'
 
@@ -14,7 +14,6 @@ export default Backbone.Router.extend({
 		
 		//check for course loading
 		$('#course_app').append('<div> The course id is ' + course_id + "</div>");
-		
 	}, 
 
 	initialize() {

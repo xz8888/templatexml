@@ -1,8 +1,10 @@
 import Backbone from 'backbone';
-import _ from 'Lodash';
+import $ from 'jquery';
+import _ from 'lodash';
+import ConfigParser from './parser/configParser.js'
+import DitamapParser from './parser/ditamapParser.js'
 
 var ApplicationModel = Backbone.Model.extend({
-
 	defaults:{
 
 	}
@@ -17,9 +19,31 @@ ApplicationContext.start = _.once(function(){
 })
 
 ApplicationContext.loadCourse = _.once(function(course){
-	
-})
-//initialize the application after loading
+	if (!course.base_dir){
+		alert('Base_dir not specified in coursemap.json');
+		return;
+	}
 
+	var config_file = course.config ? course.base_dir + "/" + course.config : course.base_dir + "/config.xml";
+	var ditamap = course.ditamap ? course.base_dir + "/" + course.ditamap : course.base_dir + "/DITAMAP_XML_E.xml";
+
+	//use jquery defered to fetch xml
+	$.when($.ajax(config_file), $.ajax(ditamap)).done(function(data1, data2){
+		var configData = new ConfigParser().parse(data1[0]);
+		var ditamapParser = new DitamapParser();
+		
+		ditamapParser.parse($(data2[0]));
+
+		//load the course data 
+		var courseData = ditamapParser.getCourse();
+		
+		//load the menu
+		var menuData = ditamapParser.getMenu();
+
+
+	})
+})
+
+//initialize the application after loading
 export default ApplicationContext
 

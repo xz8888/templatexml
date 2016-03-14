@@ -1,4 +1,4 @@
-import Backbone from 'Backbone'
+import Backbone from 'backbone'
 import _ from 'lodash'
 
 export default Backbone.Model.extend({
@@ -21,7 +21,6 @@ export default Backbone.Model.extend({
 
 	parse: function(response){
 		this.courses = response;
-
 		return ;
 	}, 
 
