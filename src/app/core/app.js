@@ -1,13 +1,11 @@
 import Backbone from 'backbone';
 import $ from 'jquery';
 import _ from 'lodash';
-import ConfigParser from './parser/configParser.js'
-import DitamapParser from './parser/ditamapParser.js'
+import ConfigParser from './parser/configParser'
+import DitamapParser from './parser/ditamapParser'
+import Course from './models/course'
 
 var ApplicationModel = Backbone.Model.extend({
-	defaults:{
-
-	}
 })
 
 var ApplicationContext = new ApplicationModel();
@@ -31,16 +29,17 @@ ApplicationContext.loadCourse = _.once(function(course){
 	$.when($.ajax(config_file), $.ajax(ditamap)).done(function(data1, data2){
 		var configData = new ConfigParser().parse(data1[0]);
 		var ditamapParser = new DitamapParser();
-		
+
 		ditamapParser.parse($(data2[0]));
 
 		//load the course data 
 		var courseData = ditamapParser.getCourse();
-		
-		//load the menu
 		var menuData = ditamapParser.getMenu();
 
+		var courseMap = new Course(courseData);
 
+	}).fail(function(){
+		alert("Can't find ditamap or config.xml in the path specified")
 	})
 })
 

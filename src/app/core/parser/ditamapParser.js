@@ -42,6 +42,7 @@ class DitamapParser extends Parser {
                 nav.id = $(this).attr('id');
                 nav.title_url = $(this).attr('navtitle');
                 nav.title = $(this).attr('navtitle');
+                //default completion status
 
                 if ($(this).attr('alternate') != undefined && $(this).attr('alternate').length > 0)
                     nav.title = $(this).attr('alternate');
@@ -79,7 +80,7 @@ class DitamapParser extends Parser {
     }
 
     loadMenu(menuNode) {
-
+        //tod load menu
     }
 
     getMenu() {

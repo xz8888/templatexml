@@ -1,9 +1,9 @@
 import Backbone from 'backbone'
 
+
 export default Backbone.Model.extend({
 	defaults:{
-			type: "course", 
-			modules: new Backbone.Collection;
+			type: "module"
 	},
 
 	initialize: function(attr, option){
@@ -11,8 +11,6 @@ export default Backbone.Model.extend({
 	},
 
 	loadCourseMap: function(map){
-		for (attr.map){
-			
-		}
+		
 	}
 })
